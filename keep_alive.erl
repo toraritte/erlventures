@@ -10,6 +10,7 @@ on_exit(Pid, Fun) ->
                 end
             end).
 
+% ah ah ah ah keepin' alive, keepin' alive
 keep_alive(Name, Fun) ->
     register(Name, Pid = spawn(Fun)),
     on_exit(Pid, fun(_Why) -> keep_alive(Name, Fun) end).
