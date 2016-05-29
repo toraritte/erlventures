@@ -8,10 +8,11 @@ chain_monitor(N) ->
     %
     % -> linkmon-chain_monitor.png
     %
-    spawn_monitor(linkmon_Hebert,chain,[N,self()]),
-    receive
-        M -> M
-    end.
+    spawn_monitor(linkmon_Hebert,chain,[N,self()]).
+
+system_chain(N) ->
+    process_flag(trap_exit,true),
+    chain(N).
 
 chain(0, Shell) ->
     receive
@@ -46,6 +47,12 @@ chain(N, Shell) ->
 % c(linkmon_Hebert),
 % io:format("Shell's self() -> ~p~n",[self()]),
 % linkmon_Hebert:chain_monitor(7).
+% io:format("Shell's self() -> ~p~n",[self()]),
+% flush().
+
+% c(linkmon_Hebert),
+% io:format("Shell's self() -> ~p~n",[self()]),
+% linkmon_Hebert:system_chain(7),
 % io:format("Shell's self() -> ~p~n",[self()]),
 % flush().
 
