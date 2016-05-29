@@ -1,4 +1,4 @@
--module(linkmon).
+-module(linkmon_Hebert).
 -compile(export_all).
 
 chain(N) ->
@@ -8,7 +8,7 @@ chain_monitor(N) ->
     %
     % -> linkmon-chain_monitor.png
     %
-    spawn_monitor(linkmon,chain,[N,self()]),
+    spawn_monitor(linkmon_Hebert,chain,[N,self()]),
     receive
         M -> M
     end.
@@ -26,25 +26,26 @@ chain(0, Shell) ->
             % by its supervisor - with a different pid.
             %
             % -> linkmon-chain.png
-            %
+            % %
             Shell ! {viszlat,self()},
             exit(ennyi_volt)
     end;
 chain(N, Shell) ->
+    io:format("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[~p~n",[Shell]),
   % Pid = spawn(fun() -> chain(N-1) end),
-    Pid = spawn(?MODULE,chain,[N-1]),
+    Pid = spawn(?MODULE,chain,[N-1,Shell]),
     link(Pid),
     receive
         M -> Shell ! M
     end.
 
-% c(linkmon),
-% linkmon:chain(7).
+% c(linkmon_Hebert),
+% linkmon_Hebert:chain(7).
 % flush().
 
-% c(linkmon),
+% c(linkmon_Hebert),
 % io:format("Shell's self() -> ~p~n",[self()]),
-% linkmon:chain_monitor(7).
+% linkmon_Hebert:chain_monitor(7).
 % io:format("Shell's self() -> ~p~n",[self()]),
 % flush().
 
@@ -63,8 +64,8 @@ self_from_spawned_mod_fun(Shell) ->
 mod_fun(Shell,Pid) ->
     Shell ! Pid.
 
-% c(linkmon),
+% c(linkmon_Hebert),
 % io:format("Shell's self() -> ~p~n",[self()]),
-% linkmon:self_from_spawned_anon_fun(self()),
-% linkmon:self_from_spawned_mod_fun(self()),
+% linkmon_Hebert:self_from_spawned_anon_fun(self()),
+% linkmon_Hebert:self_from_spawned_mod_fun(self()),
 % flush().
